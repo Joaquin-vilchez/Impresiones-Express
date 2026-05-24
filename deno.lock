@@ -1,0 +1,40 @@
+{
+  "version": "5",
+  "specifiers": {
+    "jsr:@supabase/functions-js@*": "2.105.4",
+    "jsr:@supabase/functions-js@2": "2.105.4"
+  },
+  "jsr": {
+    "@supabase/functions-js@2.105.4": {
+      "integrity": "e81b95eac034f9ebb8b62d64e9006958ce762622a882ad6b19ee9eab94da2043"
+    }
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@eslint/js@^9.9.1",
+        "npm:@supabase/supabase-js@^2.57.4",
+        "npm:@types/react-dom@^18.3.0",
+        "npm:@types/react@^18.3.5",
+        "npm:@vitejs/plugin-react@^4.3.1",
+        "npm:autoprefixer@^10.4.18",
+        "npm:chart.js@^4.5.1",
+        "npm:date-fns@^4.1.0",
+        "npm:eslint-plugin-react-hooks@^5.1.0-rc.0",
+        "npm:eslint-plugin-react-refresh@~0.4.11",
+        "npm:eslint@^9.9.1",
+        "npm:globals@^15.9.0",
+        "npm:lucide-react@0.344",
+        "npm:postcss@^8.4.35",
+        "npm:react-chartjs-2@^5.3.1",
+        "npm:react-dom@^18.3.1",
+        "npm:react@^18.3.1",
+        "npm:recharts@^3.8.1",
+        "npm:tailwindcss@^3.4.1",
+        "npm:typescript-eslint@^8.3.0",
+        "npm:typescript@^5.5.3",
+        "npm:vite@^5.4.2"
+      ]
+    }
+  }
+}

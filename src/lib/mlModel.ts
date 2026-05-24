@@ -1,5 +1,6 @@
 import type { PrintType, Size, Material } from './supabase';
 
+// Feature encoding maps
 const printTypeBase: Record<PrintType, number> = {
   digital: 0.8,
   offset: 2.5,
@@ -24,6 +25,8 @@ const materialFactor: Record<Material, number> = {
   lona: 1.4,
 };
 
+// Simulated Random Forest regression coefficients (pre-trained)
+// In production this would call a real ML endpoint or use a trained model
 const RF_INTERCEPT = 0.3;
 const RF_QUANTITY_COEFF = 0.00085;
 const RF_NOISE_SCALE = 0.08;
@@ -39,11 +42,13 @@ export function predictProductionHours(
   quantity: number,
   material: Material
 ): number {
+  // Linear regression component
   const baseHours = printTypeBase[printType];
   const sizeMult = sizeMultiplier[size];
   const matFactor = materialFactor[material];
   const quantityEffect = RF_QUANTITY_COEFF * quantity;
 
+  // Random forest ensemble simulation: average of 3 "trees" with slight variation
   const seed = quantity + printType.length * 13 + size.length * 7;
   const noise = (seededRandom(seed) - 0.5) * RF_NOISE_SCALE;
 
