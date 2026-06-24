@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-// ✨ Corrección 1: Eliminamos Zap y Clock que no se estaban usando
-import { Printer, CheckCircle2, AlertTriangle, Sparkles } from 'lucide-react';
+import { Printer, Zap, Clock, CheckCircle2, AlertTriangle, Sparkles } from 'lucide-react';
 import { supabase, type PrintType, type Size, type Material } from '../lib/supabase';
 import { predictProductionHours } from '../lib/mlModel';
 import { notifyOrderCreated } from '../lib/edgeFunctions';
@@ -63,8 +62,7 @@ export default function NewOrder({ onSuccess }: { onSuccess: () => void }) {
       setPrediction(null);
       setPreviewCost(0);
     }
-  // ✨ Corrección 2: Agregamos 'qty' al arreglo de dependencias
-  }, [qty, form.print_type, form.size, form.material]);
+  }, [form.quantity, form.print_type, form.size, form.material]);
 
   function handleChange(field: keyof FormState, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -88,6 +86,9 @@ export default function NewOrder({ onSuccess }: { onSuccess: () => void }) {
 
     const hours = prediction ?? predictProductionHours(form.print_type, form.size, qty, form.material);
 
+    // Obtener el user_id del usuario autenticado
+    const { data: { user } } = await supabase.auth.getUser();
+
     const { data, error: dbError } = await supabase.from('orders').insert({
       client_name: form.client_name.trim(),
       print_type: form.print_type,
@@ -96,6 +97,7 @@ export default function NewOrder({ onSuccess }: { onSuccess: () => void }) {
       material: form.material,
       status: 'pendiente',
       predicted_hours: hours,
+      user_id: user?.id || null,
     }).select().single();
 
     setSubmitting(false);
@@ -297,8 +299,8 @@ export default function NewOrder({ onSuccess }: { onSuccess: () => void }) {
               <div className="bg-white rounded-xl p-4 border border-sky-100">
                 <div className="text-xs text-gray-600 font-medium mb-2">Costo Estimado</div>
                 <div className="flex items-baseline gap-2">
-                  <div className="text-3xl font-black text-emerald-600">S/ {previewCost}</div>
-                  <div className="text-sm text-gray-600">PEN</div>
+                  <div className="text-3xl font-black text-emerald-600">${previewCost}</div>
+                  <div className="text-sm text-gray-600">USD</div>
                 </div>
               </div>
             </div>
