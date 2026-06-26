@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
 import { supabase } from './lib/supabase';
-import { User } from '@supabase/supabase-js'; // 1. Agregamos esta importación
+import type { User } from '@supabase/supabase-js'; // <-- Importamos el tipo User
 import Navbar from './components/Navbar';
 import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import Orders from './pages/Orders';
 import NewOrder from './pages/NewOrder';
 import Reports from './pages/Reports';
+import MLModels from './pages/MLModels';
 import Auth from './pages/Auth';
 
-// 2. Exportamos el tipo para que lo puedas usar en Navbar.tsx y otros
-export type Page = 'landing' | 'dashboard' | 'orders' | 'new-order' | 'reports' | 'auth';
+type Page = 'landing' | 'dashboard' | 'orders' | 'new-order' | 'reports' | 'ml-models' | 'auth';
 
 export default function App() {
   const [page, setPage] = useState<Page>('landing');
-  // 3. Le indicamos a TypeScript que el usuario puede ser tipo User o null
-  const [user, setUser] = useState<User | null>(null);
+  // Le decimos a TypeScript que user puede ser de tipo User o null
+  const [user, setUser] = useState<User | null>(null); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,13 +45,13 @@ export default function App() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
       {user && <Navbar current={page} onChange={setPage} user={user} />}
       <main className={user ? 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8' : ''}>
-        {/* 4. Le asignamos un tipo (string o Page) al parámetro 'p' */}
-        {page === 'landing' && <Landing onNavigate={(p: string) => setPage(p as Page)} user={user} />}
+        {page === 'landing' && <Landing onNavigate={(p) => setPage(p as Page)} user={user} />}
         {page === 'auth' && <Auth onSuccess={() => setPage('dashboard')} />}
         {user && page === 'dashboard' && <Dashboard />}
         {user && page === 'orders' && <Orders />}
         {user && page === 'new-order' && <NewOrder onSuccess={() => setPage('orders')} />}
         {user && page === 'reports' && <Reports />}
+        {user && page === 'ml-models' && <MLModels />}
       </main>
     </div>
   );

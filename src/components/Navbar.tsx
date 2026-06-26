@@ -1,13 +1,16 @@
-import { Printer, LayoutDashboard, ClipboardList, PlusCircle, BarChart3, LogOut, Menu, X } from 'lucide-react';
+import { Printer, LayoutDashboard, ClipboardList, PlusCircle, BarChart3, Brain, LogOut, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { User } from '@supabase/supabase-js';
-import { Page } from '../App'; // Importamos el tipo unificado desde App.tsx
+import type { User } from '@supabase/supabase-js';
+
+// 1. Agregamos 'landing' y 'auth' para que coincida exactamente con App.tsx
+type Page = 'landing' | 'dashboard' | 'orders' | 'new-order' | 'reports' | 'ml-models' | 'auth';
 
 interface NavbarProps {
   current: Page;
   onChange: (page: Page) => void;
-  user: User; // Reemplazamos 'any' por el tipo correcto de Supabase
+  // 2. Cambiamos 'any' por el tipo correcto de Supabase
+  user: User | null; 
 }
 
 export default function Navbar({ current, onChange, user }: NavbarProps) {
@@ -18,6 +21,7 @@ export default function Navbar({ current, onChange, user }: NavbarProps) {
     { id: 'orders', label: 'Pedidos', icon: <ClipboardList size={18} /> },
     { id: 'new-order', label: 'Nuevo Pedido', icon: <PlusCircle size={18} /> },
     { id: 'reports', label: 'Reportes', icon: <BarChart3 size={18} /> },
+    { id: 'ml-models', label: 'Modelos ML', icon: <Brain size={18} /> },
   ];
 
   async function handleLogout() {

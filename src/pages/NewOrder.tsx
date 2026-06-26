@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Printer, Zap, Clock, CheckCircle2, AlertTriangle, Sparkles } from 'lucide-react';
+import { Printer, CheckCircle2, AlertTriangle, Sparkles } from 'lucide-react';
 import { supabase, type PrintType, type Size, type Material } from '../lib/supabase';
 import { predictProductionHours } from '../lib/mlModel';
 import { notifyOrderCreated } from '../lib/edgeFunctions';
@@ -62,7 +62,7 @@ export default function NewOrder({ onSuccess }: { onSuccess: () => void }) {
       setPrediction(null);
       setPreviewCost(0);
     }
-  }, [form.quantity, form.print_type, form.size, form.material]);
+  }, [qty, form.print_type, form.size, form.material]);
 
   function handleChange(field: keyof FormState, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
